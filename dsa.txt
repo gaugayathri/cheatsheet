@@ -1,0 +1,1220 @@
+JAVASCRIPT BASICS:
+
+CLOSURES:
+definition: closures is the combination of a function bundles together with reference to its surrounding state
+(or) it gives a access to outer scope
+
+function from an inner function
+eg:   
+ var name="roadside coder"
+//global scope
+function local(){
+    //lexical scope
+    console.log(name)
+}
+local() // roadside coder
+eg:2
+//global scope
+function subscribe(){
+    var name="roadside coder";
+    //inner scope2
+    function display(){
+        //inner scope
+        console.log(name)
+    }
+    display() 
+} 
+subscribe()  //roadside coder
+
+closure scope chain:
+-local scope
+-outer function scope
+-global scope
+
+eg: var c=10
+function sum(a){
+    return function(b){
+        return function(c){
+            return a+b+c
+        }
+    }
+}
+console.log(sum(2)(3)) //15
+
+INTERVIEW QUESTIONS
+
+1.what will be console log
+let count=0;
+(function print(){
+    if(count==0){
+        let count=1;
+        console.log(count) //1 it overlaps the count variable by 1 by shadowing
+    }
+    console.log(count) //0
+})()
+ 
+ 2.write a function that would allow you to do this
+ var addsix=create(10)
+ addsix(19) // 16
+ addsix(21) //27
+
+ function create(a){
+    return function(b){
+         console.log(a+b)
+    }
+ }
+ var addsix=create(10)
+ addsix(19) // 16
+ addsix(21) //27
+
+ 3.time optimization
+ function find(index){
+    let a=[];
+    for(let i=0;i<1000000;i++){
+        a[i]=i*i
+    }
+    console.log(a[index])
+ }
+ console.time("6") //36
+ find(6) // 6:57.97
+ console.timeEnd("6")
+ console.time("12") //144
+ find(12) //12:64.512
+ console.timeEnd("12")
+
+ ans: function find(){
+    let a=[];
+    for(let i=0;i<1000000;i++){
+        a[i]=i*i
+    }
+    return function(index){
+    console.log(a[index])
+    }
+ }
+ const closure=find()
+ console.time("6") //36
+ closure(6) // 6:0.25
+ console.timeEnd("6")
+ console.time("12") //144
+ closure(12) //12:0.025
+ console.timeEnd("12")
+
+ 4.block scope and setTimeout
+ for(var i=0;i<3;i++){
+    setTimeout(function log(){
+        consoole.log(i)
+    },100)
+ }    // 3 3 3
+
+ans-1:for(let i=0;i<3;i++){
+    setTimeout(function log(){
+        consoole.log(i)
+    },100) //
+ }
+ ans-2:for(var i=0;i<3;i++){
+         function inner(i){
+    setTimeout(function log(){
+        consoole.log(i)
+    },100)
+    }
+ }  //0 1 2
+
+5.how would you create a private counter
+function counter(){
+    var _counter=0;
+
+    function add(increment){
+         _counter+=increment;
+    }
+    function retrive(){
+        return "counter =" + _counter
+    }
+    return {
+        add,retrive
+    }
+}
+const c=counter()
+c.add(10)
+c.add(5)
+console.log(c.retrive()) // counter=15
+
+6.what is a module pattern
+var module=(function(){
+    function privateMethod(){
+        console.log("private")
+    }
+    return {
+        publicMethod:function(){
+              console.log("public")
+        }
+    }
+})();
+module.publicMethod() // public
+module.privateMethod() //erroe
+-in module function privateMethod cannot be acessiable outside of function
+-eg:if we make an api call that user cannot directly access to the api instead use  publicMethod to access it
+
+7.make this run only once
+let view;
+function like(){
+    view="roadside coder"
+    console.log("subscribe to" ,view)
+}
+like()
+
+    
+ans:let view;
+function like(){
+    let called=0;
+    return function(){
+    if(called>0){
+        console.log("already subscribe")
+    }else{
+       view="roadside coder"
+    console.log("subscribe to" ,view)
+    called++ 
+    }
+    }
+    
+}
+let l=like()
+l() //  subscribe to roadside coder
+l() //already subscribe
+l() //already subscribe
+
+//CURRYING IN JAVASCRIPT
+definition: currying is the function that takes one argument at a time and retrun new function expecting the next argument
+           -it make the function callable from f(a,b) to f(a)(b)
+
+ ex:function f(a){
+    return function(b){
+        return a+b
+    }
+ }
+ console.log(f(2)(3)) //5 
+
+ 1.why would use of currying
+ -to avoid the passing of same variable again and again
+ -to make higher order function
+ -to make function pure and less prone to error
+
+ 2.sum(2)(6)(1)
+ function sum(a){
+    return function(b){
+        return function(c){
+            return a+b+c
+        }
+    }
+ }
+ console.log(sum(2)(6)(1)) //9
+
+ 3. evaluate("sum")(4)(2)=>6
+ evaluate("sub")(4)(2)=>2
+ evaluate("mul")(4)(2)=>8
+ evaluate("div")(4)(2)=>2
+
+ function evaluate(operation){
+    return function(a){
+        return function(b){
+            if(operation=="sum") return a+b
+           else if(operation=="sub") return a-b
+           else if(operation=="mul") return a*b
+            else if(operation=="div") return a/b
+
+            else return "invalid"
+        }
+    }
+ }
+const c=evaluate("mul")
+console.log(c(9)(6)) //54
+
+4.infinite currying
+function f(a){
+    return function(b){
+        if(b) return f(a+b)
+        return a;
+    }
+}
+console.log(f(3)(4)(5)()) //12
+
+5.currying vs partial application
+- currying:the no of nested function = the number of arguments it passed to the function
+
+6.manipulating dom
+in html: <p id="text">hello,gayathri</p>
+in js:
+function curry(id){
+  return function(context){
+    document.querySelector("#",id).textContent=content;
+  }
+}
+const update=curry("text");
+update("hello gayu") // hello gayu
+
+//OBJECTS IN JAVASCRIPT
+definition:an object is a collection of propeerties,and a property is an association between a name and a value.
+eg: const user={
+    name:"abc",
+    age:21,
+}
+user.name="xyx"
+delete user.age
+console.log(user) // deletes age property
+console.log(user.name) // update abc to xyx
+
+1. output of question:
+const func=(function (a){
+    delete a;
+    return a;
+})(5)
+console.log(func) // 5 delete keyword only delete only properties of object not a local variable
+
+2.const user={
+    name:"abc",
+    age:21,
+    "like the video":true
+}
+delete.user["like the video"]
+console.log(user["like the video"]) // true (another way of acessing properties)
+
+3. add properties to object
+const property="firstName";
+const name="piyush";
+const user={
+    [property]:"piyush"
+}
+console.log(user)
+
+4.how to access the properties of object
+const user={
+    name:"abc",
+    age:21,
+    isTotallyAwesome:true,
+}
+for(key in user){
+    console.log(key)  // name age , isTotallyAwesome
+    console.log(user[key]) //xyz 21 true
+}
+
+5.what is the output
+const obj={
+    a:"one",
+    b:"two",
+    a:"three",
+} //if two keys with same name will be replaced by last specified value and it will still in first position
+console.log(obj)
+
+6.create a function multiply(obj) that multiplies all numeric value of nums by 2
+let nums={
+    a:100,
+    b:200,
+    title:"my nums"
+}
+function multiply(obj){
+    for(key in obj){
+        if(typeof obj[key]=="number"){
+            obj[key] *=2
+        }
+    }
+}
+multiply(nums)
+console.log(nums)
+ 
+ 7.what is the output of code
+ const a={};
+ const b={key:"b"}
+ const c={key:"c"}
+ a[b]=123;
+ a[c]=456
+ console.log(a[b]) //456 an object cannot be converted as a key unless it's a string when it tries to convert it into string it becomes [object object ]
+
+ 8.what is json.stringify and json.parse
+ let user={
+    name:"piyush",
+    age:21,
+ }
+ const obj=JSON.stringify(user)
+ console.log(obj) //{"name":"piyush","age":21} object as a string
+ console.log(JSON.parse(obj)) // back to original object
+
+usecase:to store value in local storage
+localStorage.setItem("test",obj) // key=test value=user,obj
+console.log(JSON.parse(localStorage.getItem("test"))) //back to original object
+
+9.what is the output
+console.log([..."lydia"]) // "l","y","d","i","a" //used to spread properties of an object or array
+
+const user={name:"abc",age:21};
+const admin={admin:true,...user}
+console.log(admin) //{admin:true,name:"abc",age:21}
+
+10.what is the output
+const settings={
+    username:"xyz",
+    level:19,
+    health:90,
+}
+const data=JSON.stringify(settings,["level","health"])
+console.log(data) //{"level":19,"health":90}
+
+11.what is the output
+const shape={
+    radius:10,
+    diameter(){
+        return this.radius*2;
+    }
+    perimeter:()=> Math.PI*this.radius
+}
+console.log(shape.diameter()) //20 normal function inside the object is reference to that object so it value radius as 10
+console.log(shape.perimeter()) //nan arrow function inside doesn't take that object as a reference intead of taking window object
+
+12.what is destructuring in object
+let user={
+    name:"xyz",
+    age:21,
+}
+destructuring:taking out the specified properties
+const name="abc"
+const {name:myName,age}=user;
+console.log(myNamename) //xyz
+
+let user={
+    name:"xyz",
+    age:21,
+    full:{
+        first:"a",
+        last:"c",
+    }
+}
+const {full}=user //{first:"a",last:"c",}
+const {full:{first}}=user //abc
+
+13.what is the output
+function get(fruit,favorite,...args){ // get(fruit,...args,favorite) rest param must be last 
+    return [...fruits,...args,favorite] // but spread operator can be anywhere
+}
+ console.log(get([["banana","apple"],"cherry","peach"])) // banana apple cherry peach
+ 
+14.what is the output
+let c={greeting:"key"}
+let d;
+d=c;
+c.greeting="hello"
+console.log(d.greeting) //hello because we are providing reference not the complete object
+
+15.what is the output
+console.log({a:1}=={a:1}) //false
+console.log({a:1}==={a:1}) //false both objects and are different in memory space but they are equal as referencing a paricular area in the memory
+
+16.what is the output
+     let person={name:"lydia"}
+     const members=[person]
+     person=null; 
+     person.name=null //[{name:null}]
+     console.log(members) //[{name:"lydia"}]
+
+17.what is the output
+const value={number:10};
+const multiply=(x={...value})=>{ // ...value=clone the object
+    console.log((x.number *=2))
+}
+multiply() 20
+multiply() 20
+multiply(value) 20 reference to value
+multiply(value)  40 update the value=20 then it multiply by 2
+
+18.what is the  output
+function change(person){
+    person.age=25;
+    person={
+        name:"john",
+        age:50,
+    }
+    retrun person;
+}
+const personObj={
+    name:"alex",
+    age:30,
+}
+const personObj2=change(personObj)
+
+console.log(personObj) //{name:"alex",age:25}
+console.log(personObj2) //{name:"john",age:50}
+
+19.what is shallow and deep copy
+20.how to do deep copy
+let user={
+    name:"abc",
+    age:21,
+}
+const clone={...user}
+clone.name="xyz"
+console.log(user,clone) //{name:"xyz",age:21}
+
+//THIS KEYWORD IN JAVASCRIPT (implicit binding)
+this:to reference something like object
+
+ex: this.a=10
+console.log(this.a) //15
+console.log(this) //window object
+this keyword is depend on which context is currently in
+
+ex:2:this.a=5;
+function get(){
+    console.log(this)
+}
+get() //5
+ 
+ex.3:this.a=5 
+const get=()=>{
+    console.log(this.a)
+} 
+get()//5
+
+1.this keyword inside object
+let user={
+    name:"alex",
+    age:21,
+    get(){ 
+        console.log(this.name) //alex this keyword refers to that user object
+    }
+}
+user.get()
+
+2.let user={
+    name:"alex",
+    age:21,
+    get:{ 
+     newName:"roadside coder";
+       child(){
+        console.log(this.newName ,this.name) // currently this pointing to get object(immediate parent) not the user object
+       }
+    }
+}
+user.get.child() //roadside coder,undefined
+
+3.let user={
+    name:"alex",
+    age:21,
+    get:()=>{ 
+        console.log(this.name) //nothing  this keyword refers to window object
+    }
+}
+user.get()
+
+4. let user={
+    name:"alex",
+    age:21,
+    parent(){
+    get:()=>{ 
+        console.log(this.name) //alex  this keyword refers to parent function and parent function refers that object
+    }
+    get()
+  }
+}
+user.parent()
+
+5.inside the class
+ class user{
+    constructor(n){
+        this.name=n
+    }
+    get(){
+        console.log(this.name) //this points everything inside the constructor
+    }
+ }
+const nested=new user("abc")
+nested.get() //abc    
+ 
+6.what is the output
+const user={
+    firstName:"abx",
+    get(){
+        const firstName="xcv"
+        retrun this.firstName
+    }
+}
+console.log(user.get()) // abx
+
+7.what is the output
+function make(){
+    return{
+        name:"john",
+        ref:this, //instead of using ref as a function
+        ref(){
+            return this; //john
+        }
+    }
+}
+let user=make();
+console.log(user.ref.make) //window object
+ 
+ 8.what is the output
+const user={
+    name:"abc",
+    log(){
+        console.log(this.name) //undefined
+    }
+}
+setTimeout(user.log,1000) //uses the function as a callback point to window object and window object doesn't have name
+correct code:setTimeout(function(){
+    user.log()
+    },1000)  //abc ivokes method of the user
+
+9.what is the output
+const user={
+    name:"abc",
+    greet(){
+        return `hello ${this.name}` 
+    },
+    fire:()=>{
+        return `goodbye ${this.name}`
+    }
+}  
+console.log(user.greet()) //hello abc
+console.log(user.fire()) // goodbye undefined  
+
+10.calculate  an object calculator
+let calculate={
+    //your code
+}
+calculate.read()
+console.log(calculate.sum())
+console.log(calculate.mul())
+
+let calculate={
+    read(){
+        this.a =+prompt("a=0",0)
+        this.b =+prompt("b=0",0)
+    },
+    sum(){
+        retrun this.a + this.b
+    },
+    mul(){
+        return this.a * this.b
+    }
+}
+calculate.read()
+console.log(calculate.sum())
+console.log(calculate.mul())
+
+11.what is the output
+var length=4;
+function call(){
+    console.log(this.length)
+}
+const object={
+    length=5,
+    method(fn){
+      fn()
+    },
+}
+object.method(call) //4
+
+12.implement calc
+const result=calc.add(10).multiply(5).substract(30).add(10)
+console.log(result.total)
+
+const calc={
+    let total=0,
+    add(a){
+        this.a+=total
+      return this;
+    },
+    substract(a){
+        this.a -=total;
+        return this;
+    },
+    multiply(a){
+        this.a *=total 
+        return this
+    },
+}
+const result=calc.add(10).multiply(5).substract(30).add(10) //30
+console.log(result.total)
+
+//CALL BIND AND APPLY (explicit object binding)
+
+1.what is call
+var obj={name:"piyush"}
+
+function hello(age){ 
+    return `hello ${this.name} age`
+}
+console.log(hello.call(obj,21)) // hello piyush 21
+
+2.what is apply
+var obj={name:"piyush"}
+
+function hello(age,profession){ 
+    return `hello ${this.name} {age} and is a {profession}`
+}
+console.log(hello.apply(obj,[21,"software engineer"])) // hello piyush 21 and is a software engineer 
+
+3.what is bind
+var obj={name:"piyush"}
+
+function hello(age){ 
+    return `hello ${this.name} age`
+}
+const bind1=hello.bind(obj)
+console.log(bind1(21)) //provides a reusable function
+
+4.what is the output
+const person={name:"abc"}
+
+function say(age){
+    return `${this.name} is ${age}`
+}
+console.log(say.call(person,21)) //abc is 21
+const b=say.bind(person)
+console.log(b(21)) // abc is 21
+
+5.call within the function
+const age=10;
+var person={
+    name:"abc",
+    age"21,
+    get:function(){
+        return this.age
+    }
+}
+const person2={age:34}
+console.log(person.get.call(person2)) //34
+
+6.what is the output
+var status="d"
+
+setTimeout(()=>{
+    const status="u";
+
+    const data={
+      const status="f",
+    get(){
+        return this.status
+    },
+    }
+console.log(data.get()) // f
+console.log(data.get.call(this)) //d
+},0)
+
+7.call printAnimals such that all animals in object
+const animals={
+    {species:"lion",name:"king"},
+    {species:"tiger",name:"queen"},
+}
+function printAnimals(i){
+    this.print=function(){
+        console.log("#"+i+" "+this.species+":"+this.name)
+    }
+    this.print()
+}
+for(let i=0;i<animals.length;i++){
+    printAnimals.call(animals[i],i) // #1 lion king #2 tiger queen
+}
+
+8.append an array to another array
+const arr=[1,2,3]
+const elements=["a","b","c"]
+arr.push.apply(arr,elements) 
+console.log(arr) //[1,2,3,"a","b","c"]
+
+9.using apply to enhance build in function
+//find min/max number in an array
+const numbers=[5,6,2,3,7]
+console.log(Math.max.apply(null,[numbers])) //7
+console.log(Math.min.apply(null,[numbers])) //2
+
+10.bound function
+function f(){
+    console.log(this)
+}
+let user={
+    g:f.bind(null) // once bind keyword is used to bind something it strictly binds to that context it doesn't change even you call the function
+}
+console.log(user.g()) //window object
+
+11.bind chaining
+function f(){
+    console.log(this.name)
+}
+f=f.bind({name:"john"}).bind((name:"abi"))
+console.log(f()) //john bind is only used once it binding to particular object it doesn't allow to chaining
+
+12.fix the line 22
+function check(success,fail){
+    let password=prompt("password?","");
+    if(password=="roadside coder") success();
+    else fail();
+}
+let user={
+    name:"piyush",
+    loginSuccess(){
+        console.log(`${this.name} logged in`)
+    },
+     loginFail(){
+        console.log(`${this.name} failed to logged in`)
+    },
+}
+check(user.loginSuccess,user.loginFail)
+correct:check(user.loginSuccess.bind(user),user.loginFail.bind(user))
+
+13.partial application for loign function
+function check(ok,fail){
+    let password=prompt("password?","");
+     if(password=="roadside coder") ok();
+    else fail();
+}
+let user={
+    name:"piyush",
+    login(result){
+        console.log(this.name +result?"login success":"login Fail")
+    }
+}
+check(?,?)
+correct:check(user.login.bind(user,true),user.login.bind(user,false))
+
+14.explicit binding with arrow function
+const age=10;
+
+var person={
+    name:"abc",
+    age:21,
+    get:()=> console.log(this),
+    getAge:function(){
+        console.log(this.age);
+    },
+}
+var person2={age:23}
+person.getAge.call(person2) //undefined
+person.get.call(person2)//23
+
+//PROMISES IN JAVASCRIPT
+1.synchronous vs asynchronous code
+ex: console.log("start")
+    console.log("hiiii")
+    console.log("end") // start hiii end(our code is executed line by line and this is example of synchronous code )
+ex: console.log("start")
+    setTimeout(()=>{
+       console.log("hiiii") 
+    },100) 
+    console.log("end") // start end hiii(js is a single threaded language and it run synchronous code first and then asynchronous code) 
+
+ex: console.log("start") 
+ function important(user,cb){  //add callback
+    setTimeout(()=>{
+        return `subscribe to ${user}` wrap it with callback
+        correct:cb(`subscribe to ${user}`)
+    },1000)
+ }  
+ const message=important("roadside coder")
+  console.log(message)
+ console.log("stop")  // start undefined stop
+correct:
+ const message=important("roadside coder",(msg)=>{
+    console.log(msg)
+ })
+ console.log("stop") // start ,stop ,subscribe to roadside coder
+
+ex: console.log("start") 
+ function important(user,cb){  //add callback
+    setTimeout(()=>{
+        cb(`subscribe to ${user}`)
+    },1000)
+ }
+ function like(user,cb){  
+    setTimeout(()=>{
+        cb(`subscribe to ${user}`)
+    },1000)
+ }
+ const message=important("roadside coder",(message)=>{
+    console.log(message)
+    like("hi",(msg)=>{
+       console.log(msg) 
+    })
+ })
+ console.log("stop") //start,stop,subscribe to roadside coder,subscribe to hii
+ 
+to overcome the problem of callback hell promises is used
+
+//PROMISES
+ex:console.log("start")
+
+const sub=new Promise((resolve,reject)=>{
+    setTimeout(()=>{
+        const result=true;
+        if(result) resolve("hello")
+        esle(new Error("oops"))
+    },2000)
+})
+sub.then((res)=>{
+    console.log(res)
+}).catch((err)=>{
+    console.log(err)
+})
+console.log("stop") //start,stop,hello 
+
+ex:console.log("start")
+const sub=Promise.resolve("hello")
+sub.then((res)=>{
+    console.log(res)
+}).catch((err)=>console.log(err))
+console.log("stop")  //start,promise(fullfilled),stop,hello
+
+ex: console.log("start");
+
+function important(username){
+    return new Promise((resolve,reject)=>{
+        setTimeout(()=>{
+            resolve(`hello ${username}`)
+        },200)
+    })
+}
+function like(username){
+    return new Promise((resolve,reject)=>{
+        setTimeout(()=>{
+            resolve(`hello ${username}`)
+        },200)
+    })
+}
+function share(username){
+    return new Promise((resolve,reject)=>{
+        setTimeout(()=>{
+            resolve(`hello ${username}`)
+        },200)
+    })
+}
+
+important("roadside coder").then((res)=>{
+    console.log(res)
+    like("piyush").then((res)=>{
+        console.log(res)
+    share("gayathri").then((res)=>{
+        console.log(res)
+    })
+    })
+}).catch((err)=>{
+    console.log(err)
+})
+
+//another approach of then and catch
+
+important("roadside coder").then((res)=>{
+    console.log(res)
+    retrun like("piyush")
+}).then((res)=>{
+    console.log(res)
+    return share("gayathri")
+}).then((res)=>{
+    console.log(res)
+}).catch((err)=>{
+    console.log(err)
+})
+
+console.log("stop") // start,stop,hello roadside coder,hello piyush,hello gayathri
+
+//PROMISE COMBINATORS
+1.promise.all : it runs the then block only all the promises resolved if any one of the promise reject it runs catch block
+
+function important(username){
+    return new Promise((resolve,reject)=>{
+        setTimeout(()=>{
+            resolve(`hello ${username}`)
+        },200)
+    })
+}
+function like(username){
+    return new Promise((resolve,reject)=>{
+        setTimeout(()=>{
+            resolve(`hello ${username}`)
+        },200)
+    })
+}
+function share(username){
+    return new Promise((resolve,reject)=>{
+        setTimeout(()=>{
+            resolve(`hello ${username}`)
+        },200)
+    })
+}
+
+Promise.all([
+    important("roadside coder")
+    like("piyush")
+    share("gayathri")
+]).then((res)=>console.log(res)).catch((err)=>console.log(err))
+
+2.promise.race : if first promise resolved it runs then block whereas it returns catch block 
+function important(username){
+    return new Promise((resolve,reject)=>{
+        setTimeout(()=>{
+            reject(`hello ${username}`)
+        },200)
+    })
+}
+function like(username){
+    return new Promise((resolve,reject)=>{
+        setTimeout(()=>{
+            reject(`hello ${username}`)
+        },200)
+    })
+}
+function share(username){
+    return new Promise((resolve,reject)=>{
+        setTimeout(()=>{
+            resolve(`hello ${username}`)
+        },200)
+    })
+}
+Promise.race([
+    important("roadside coder")
+    like("piyush")
+    share("gayathri")
+]).then((res)=>console.log(res)).catch((err)=>console.log(err)) // hello gayathri
+
+3.promise.allSettled : opposite for all it returns all the failed promise also
+Promise.allSettled([
+    important("roadside coder")
+    like("piyush")
+    share("gayathri")
+]).then((res)=>console.log(res)).catch((err)=>console.log(err)) 
+
+4.promise.any : opposite for race if any one of the promise resolved it runs then block whereas it returns catch block
+Promise.any([
+    important("roadside coder")
+    like("piyush")
+    share("gayathri")
+]).then((res)=>console.log(res)).catch((err)=>console.log(err))
+
+// ASYNC AND AWAIT 
+ex:function important(username){
+    return new Promise((resolve,reject)=>{
+        setTimeout(()=>{
+            resolve(`hello ${username}`)
+        },200)
+    })
+}
+function like(username){
+    return new Promise((resolve,reject)=>{
+        setTimeout(()=>{
+            resolve(`hello ${username}`)
+        },200)
+    })
+}
+function share(username){
+    return new Promise((resolve,reject)=>{
+        setTimeout(()=>{
+            resolve(`hello ${username}`)
+        },200)
+    })
+}
+const result=async()=>{
+    try{
+    const msg=await important("roadside coder")
+    const msg1=await like("piyush")
+    const msg2=await share("gayu")
+    console.log({msg,msg1,msg2})
+    }catch(err){
+        console.log(err)
+    }
+}
+result()
+
+//INTERVIEW QUESTIONS
+1.what is the output
+console.log("start")
+
+const promise1=new Promise((resolve,reject)=>{
+    console.log(1)
+    resolev(2)
+    console.log(3)
+})
+promise1.then((res)=>console.log(res)).catch((err)=>console.log(err))
+
+console.log("stop") //start,1,3,stop,2
+
+2.what is the output
+console.log("start")
+
+const fn=()=>{
+    return new Promise((resolve,reject)=>{
+        console.log(1)
+        resolve("success")
+    })
+    console.log("middle")
+}
+fn().then((res)=>console.log(res))
+console.log("end") // start,1,middle,end,success
+
+3.what is the output
+function job(){
+    return new Promise((resolve,reject)=>{
+        reject()
+    })
+}
+let promise=job()
+
+promise.then(()=>{
+   console.log("success1")
+}).then(()=>{
+    console.log("success 2")
+}).then(()=>{
+    console.log(success 3)
+}).catch(()=>{
+    console.log("error")
+}).then(()=>{
+    console.log("success 4")
+}) // error,success 4
+
+4.what is the output
+
+function job(state){
+    return new Promise((resolve,reject)=>{
+        if(state){
+            resolve("success")
+        }else{
+            reject("error")
+        }
+
+    })
+}
+let promise=job(true)
+promise.then((data)=>{
+    console.log(data)
+    return job(false)
+}).catch((error)=>{
+    console.log(error)
+
+    return "error caught" it returns string so it consider as resolved promise
+}).then((data)=>{
+   console.log(data)
+   return job(true) // it doesn't have then block to resolve the promise so it doesn't go catch block
+}).catch((error)=>{
+    console.log(error)
+}) // success,error,error caught
+
+5.promise chaining
+const firstPromise = new Promise((resolve,reject)=>{
+    resolve("first")
+})
+const secondPromise = new Promise((resolve,reject)=>{
+    resolve(firstPromise)
+})
+secondPromise.then((res)=>{
+    return res
+}).then(res=>console.log(res)) //first
+
+6.rewrite the example code using async and await instead of .then/.catch
+function load(url){
+    return fetch(url).then((res)=>{
+        if(response.status==200){
+            return response.json();
+        }else{
+            throw new Error(response.status)
+        }
+    })
+}
+load("dummy url").catch((err)=>console.log(err))
+
+using async/await
+async load(url){
+        const response=await fetch(url)
+        if(response.status==200){
+            let json=response.json()
+            return json
+    }
+    throw new Error(response.status)
+}
+load("dummy url").catch((err)=>console.log(err))
+
+7.solve promise recursively
+function important(username){
+    return new Promise((resolve,reject)=>{
+        setTimeout(()=>{
+            resolve(`hello ${username}`)
+        },200)
+    })
+}
+function like(username){
+    return new Promise((resolve,reject)=>{
+        setTimeout(()=>{
+            resolve(`hello ${username}`)
+        },200)
+    })
+}
+function share(username){
+    return new Promise((resolve,reject)=>{
+        setTimeout(()=>{
+            resolve(`hello ${username}`)
+        },200)
+    })
+}
+
+function promRecurse(funcPromise){
+   if(funcPromise.length==0) return;
+   const currPromise=funcPromise.shift()
+
+   currPromise.then((res)=>consolelog(res)).catch((err)=>console.log(err))
+   promRecurse(funcPromise)
+}
+promRecurse([
+    important("roadside coder")
+    like("piyush")
+    share("gayathri")
+])
+
+// DEBOUNCING AND THROTTLING
+debouncing: if we type something in ecommerce site and paused for typing for few milli seconds then only the api will be call
+throttling: if we scroll some website like facebook it reaches some pixels of bottom the api will call & we experience infinite scrolling
+//lodash-for using debouncing and throttling
+
+1.create a button ui and debounce as follow
+  -->show button pressed <x> times every time button is pressed
+  -->increase triggered <y> times count after 800ms of debounce
+
+<button class="increment">increment</button>
+<p>button pressed <span class="increment_btn">0 </span>times</p> 
+<p>button triggered <span class="increment_count">0 </span>times</p>
+
+<script src="lodash url"></script>
+
+const btn=document.querySelector('.increment')
+const btnpress=document.querySelector('.increment_btn')
+const count=document.querySelector('.increment_count')
+
+const press=0;
+const trigger=0;
+
+const debouncecount=_.debounce(()=>{
+    count.innerHTML =++trigger
+},800)
+btn.addEventListener('click',()=>{
+    btnpress.innerHTML=++press
+    debouncecount()
+})
+
+2.create a button ui and throttle as follow
+  -->show button pressed <x> times every time button is pressed
+  -->increase triggered <y> times count after 800ms of throttle
+
+<button class="increment">increment</button>
+<p>button pressed <span class="increment_btn">0 </span>times</p> 
+<p>button triggered <span class="increment_count">0 </span>times</p>
+
+<script src="lodash url"></script>
+
+const btn=document.querySelector('.increment')
+const btnpress=document.querySelector('.increment_btn')
+const count=document.querySelector('.increment_count')
+
+const press=0;
+const trigger=0;
+
+const throttlecount=_.throttle(()=>{
+    count.innerHTML =++trigger
+},800)
+btn.addEventListener('click',()=>{
+    btnpress.innerHTML=++press
+    throttlecount()
+
+})  

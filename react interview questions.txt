@@ -1,0 +1,399 @@
+/* my cheat sheet*/
+
+1.what is react?
+   * react is a javascript library developed by facebook(jordan walke in 2013) for building ui interface.
+   * it uses declarative programming approach and allows developers to describe how ui should look and behave via small reusable components.
+
+   2. difference between react and react native?
+    react: * Developed for building user interfaces on the web.
+            *Uses the DOM (Document Object Model) for rendering components in web browsers.
+    
+    react native: *Developed for building mobile applications, targeting iOS and Android platforms.
+                   *Uses native components for rendering on mobile devices, providing a more native look and feel.     
+
+3.What Are the Benefits of Using React?
+   * A Virtual DOM provides a fast and efficient way to update the UI.
+   *Reusable components reduce development time and improve maintainability.
+   *it supports Cross-platform.
+
+4. What Is JSX?
+   * jsx is the combination of html and javascript.
+   * full form of jsx is  javascript xml.
+   * it allows to use javascript code inside html tag. 
+
+5. Why Do We Use the Render() Method in React? 
+   * it defined what should be displayed on the screen and return react elements.
+   * The render() method is a fundamental part of React components, and it gets called whenever there's a change in the component's state or props, causing the UI to update accordingly.
+
+6. How Does React Handle DOM Manipulation?
+   * When a component's state or props change, React updates a virtual representation of the DOM.
+   * This lightweight copy of the actual DOM is used to identify changes and update the necessary parts of the actual DOM.
+
+7.What Is the Virtual DOM in React? 
+  * it is the copy of actual dom 
+
+8.What Is State in React and How Is It Used?  
+   *state is a javascript object used to store data that changed over time such as user input.
+   *it is private to component and can only chnaged by using setstate().
+   * When a component's state changes, React re-renders the component and updates the UI. 
+
+9. What Is a Prop in React? 
+   *"props" is short for properties. 
+   *props as a way for a parent component to share information with its child components.
+   *Props help components communicate and work together to display the right information. 
+   /**********************************************************************/
+   1. **What is React?**
+   - React is a JavaScript library for building user interfaces, developed by Facebook.
+  
+2. **What are the major features of React?**
+   - Virtual DOM for optimal rendering.
+   - Component-based architecture.
+   - JSX for declarative syntax.
+   - Unidirectional data flow.
+   - Reusable and composable components.
+
+3. **What is JSX?**
+   - JSX (JavaScript XML) is a syntax extension for JavaScript recommended by React to describe what the UI should look like.
+
+4. **What is the difference between Element and Component?**
+   - An element is a plain JavaScript object describing a component or DOM node.
+   - A component is a reusable, self-contained piece of UI with its own state and lifecycle.
+
+5. **How to create components in React?**
+   - Components can be created using either function components or class components.
+
+6. **When to use a Class Component over a Function Component?**
+   - Class components are used when state or lifecycle methods are needed.
+
+7. **What are Pure Components?**
+   - Pure Components are class components that automatically implement shouldComponentUpdate with a shallow prop and state comparison for performance optimization.
+
+8. **What is state in React?**
+   - State is an object that represents the parts of a component that can change over time. It is managed internally by the component.
+
+9. **What are props in React?**
+   - Props (short for properties) are inputs to React components. They allow you to pass data from a parent component to a child component.
+
+10. **What is the difference between state and props?**
+    - State is managed within a component, while props are passed from a parent component to a child component.
+
+10.1 .what is Reconciliation
+-Reconciliation in React is the process of efficiently updating the user interface by comparing the virtual DOM representations of the current and previous states and determining the minimal set of changes needed to reflect the updated state in the actual DOM.
+
+11. **Why should we not update the state directly?**
+    - Directly updating the state can bypass React's re-rendering mechanism, leading to unpredictable behavior. Always use `setState` to update state.
+
+12. **What is the purpose of the callback function as an argument of setState()?**
+    - The callback function is executed after the state has been updated, ensuring that you're working with the latest state.
+
+13. **What is the difference between HTML and React event handling?**
+    - React event handlers are written in camelCase, e.g., `onClick` instead of `onclick`. They are functions, not strings.
+
+14. **How to bind methods or event handlers in JSX callbacks?**
+    - Use arrow functions or bind the function in the constructor to maintain the correct context.
+
+15. **How to pass a parameter to an event handler or callback?**
+    - Use arrow functions to pass parameters or bind the function with the parameter in the constructor.
+
+16. **What are synthetic events in React?**
+    - Synthetic events are React's cross-browser wrapper around the browser's native events, providing consistent properties.
+
+17. **What are inline conditional expressions?**
+    - Inline conditional expressions, like `condition ? true : false`, allow you to conditionally render elements in JSX.
+
+18. **What is the "key" prop, and what is the benefit of using it in arrays of elements?**
+    - The "key" prop is a special string attribute used to identify a list item. It helps React identify which items have changed, been added, or been removed, improving performance.
+
+19. **What is the use of refs?**
+    - Refs are used to interact with the DOM directly or to reference a React element in a class component.
+
+20. **How to create refs?**
+    - Refs can be created using `React.createRef()` or the callback ref approach.
+
+21. **What are forward refs?**
+    - Forward refs allow components to pass refs to their children, enabling parent components to interact with the child's DOM node.
+
+22. **Which is the preferred option within callback refs and `findDOMNode()`?**
+    - Callback refs are the preferred option over `findDOMNode()` for accessing the underlying DOM nodes.
+
+23. **Why are String Refs legacy?**
+    - String refs are considered legacy because they have some issues, and callback refs provide a more consistent and flexible approach.
+
+24. **What is Virtual DOM?**
+    - The Virtual DOM is a lightweight copy of the real DOM, maintained by React. It allows React to perform efficient updates and minimize direct manipulation of the actual DOM.
+
+25. **How does Virtual DOM work?**
+    - React compares the virtual DOM with a snapshot of the previous virtual DOM to determine the minimal number of updates needed, and then it updates the real DOM accordingly.
+
+26. **What is the difference between Shadow DOM and Virtual DOM?**
+    - The Virtual DOM is a concept used by React for efficient DOM updates, while the Shadow DOM is a browser feature that encapsulates styles, markup, and behavior in a scoped container.
+
+27. **What is React Fiber?**
+    - React Fiber is a reimplementation of the React reconciliation algorithm. It allows for better control of the rendering process and supports features like asynchronous rendering.
+
+28. **What is the main goal of React Fiber?**
+    - The main goal of React Fiber is to improve the responsiveness and performance of complex React applications by providing a more incremental rendering process.
+
+29. **What are controlled components?**
+    - Controlled components in React have their state controlled by React. They receive their current value through props and notify changes through callbacks.
+
+30. **What are uncontrolled components?**
+    - Uncontrolled components in React have their state managed by the DOM, and their state is not controlled by React.
+
+31. **What is the difference between `createElement` and `cloneElement`?**
+    - `createElement` is used to create a new React element, while `cloneElement` is used to clone an element and pass new props to the clone.
+
+32. **What is Lifting State Up in React?**
+    - Lifting State Up is a pattern in React where state is moved from a child component to its parent component to share the state among siblings.
+
+33. **What are the different phases of the component lifecycle?**
+    - The component lifecycle in React has three phases: Mounting, Updating, and Unmounting.
+
+34. **What are the lifecycle methods of React?**
+    - Mounting: `constructor`, `render`, `componentDidMount`.
+    - Updating: `render`, `componentDidUpdate`.
+    - Unmounting: `componentWillUnmount`.
+
+35. **What are Higher-Order components?**
+    - Higher-Order components (HOCs) are functions that take a component and return a new component with additional props or behavior.
+
+36. **How to create a props proxy for an HOC component?**
+    - Use the spread operator to pass through all the props to the wrapped component.
+
+37. **What is context?**
+    - Context provides a way to pass data through the component tree without having to pass props down manually at every level.
+    ex.conditional rendering(condition?true:false)
+
+38. **What is the `children` prop?**
+    - The `children` prop is a special prop that is used to pass components or elements between the opening and closing tags of a component.
+
+39. **How to write comments in React?**
+    - JSX comments are written inside curly braces and prefixed with `/*` and suffixed with `*/`.
+
+40. **What is the purpose of using the super constructor with the `props` argument?**
+    - In a class component, calling `super(props)` in the constructor ensures that the component properly
+
+/********************************************************************************************************************/
+REACT BASICS
+
+1.what is the role of react in software development?
+ -react is used to simplify the creation of complex ui applications.
+ 
+ 2.what is react?
+ -react is an open source javascript library
+ -react is used for building ui
+ -react simplifies the creation of single page application by using reusable component
+
+ 3.what is single page application?
+ -spa is a web application that have only one single web page
+ - if any component is added or new component updated the page will never reload or refreshed only the same page is updated.
+ eg:youtube
+
+ 4.advantages of react
+ -simple to create single page application(by using components)
+ -it's a cross platform
+ -lightweight and very fast (virtual dom)
+ -testing is easy
+
+ 5.disadvantage of react
+ -react is not a good choice for small applications
+
+ 6.difference between react and angular
+ similarity: react and angular are used to create single page ui applications using components
+
+ react:
+ -react is a javascript library
+ -react uses virtual dom which make it faster
+ -react is smaller in size and lightweight and therefore faster sometimes as than angular
+-react depends on external libraries for many complex features,so cevelopers has to write many lines of code for complex functionalities
+-react is simple to learn and more popular
+
+ angular:
+ -angular is a complete framework
+ -angular uses real dom
+ -angular is bigger because it is a complete framework
+ -since angular is a complete framework,therefore it provide build-in support for features like routing,forms,validation,http request
+ -angular is slightly difficult to learn as it as typescript,oops concepts and many more thing.
+
+7.what is dom
+-dom(document object model) represents the web page as a tree-like structure which allows javascript to dynamically access manipulate the content and structure of a web page.
+
+8.difference between dom and virtual dom
+dom:the whole web page is render whenever any changes in dom.
+virtual dom:update the changed part without re-render the whole dom.
+
+9.what is components
+-component is a reusable building block for creating user interfaces
+
+10.how to setup react project
+-install node js
+-install vs code
+-open vs code->terminal->new terminal->type command->npx create-react-app app-name
+-click file->open folder->open the react folder
+-npm start->start react app
+
+//MAIN FILES & FOLDERS
+11.what is npm and what is the role of node_modules folder
+-npm is used to manage the dependencies for your react project,including the react library itself
+
+12.what is the role of public folder
+-public folder contains all static assests that are served directly to the user's browsers such as images,fonts and index,html file
+
+13.what is the role of src folder in react
+-src folder is used to store all the source code of the application
+
+14.what is the role of index.html page in react
+-index.html file in a react project is the entry point to the application
+
+15.what is the role of app.js file in react
+-app.js is the root level component in a react application and it is responsible for rendering all of other components.
+
+16.what is the role of function and return inside app.js
+-function is a javascript function that returns react element
+
+17.what is the role of export default inside app.js
+-it is used to make this app component avalilable for import using 'import' statement in other FILES
+
+18.what is the role of index.js file,react dom,render method in react
+-react dom is the javascript library which convert your component to actual browser dom.
+-index.js file is the JavaScript file which renders all the component and replace the root element of index.html file with the newly rendered root element
+
+19.how react app load and display the components in browsers
+//JSX
+20.what is jsx
+-jsx is a syntax extension used by react to write html-like code
+
+21.advantages of jsx
+-improve code readability and writeability
+-error checking in advance
+-supports javascript extension
+
+22.can browser read jsx file?what is babel?
+-no,browser will not understand the jsx code directly
+-babel in react is used to transpile jsx syntax into regular javascript which browser can understand
+
+23.what is transpiler
+-transpiler is a tool that converts source code from one programming language to another
+eg:babel
+
+24. is it possible to use jsx without react
+-yes,it's possible to use jsx without react by creating your own transpiler like babel
+-however,this is not recommended since jsx is tightly integrated with react and relies on many react-specific features
+
+25.what is the role of fragment
+-fragment is a way of group list of children without adding extra nodes to the dom
+
+26.how do you iterate a list in jsx? what is map() method
+function App(){
+const arr=[1,2,3,4,5]
+    return(
+        <>
+        {
+            arr.mpa((i)=>i*2)
+        }
+        </>
+    )
+}
+
+27.what is props
+function App(){
+    return(
+        <>
+        <Child name="abc" purpose="intervies"/>
+        </>
+    )
+}
+function Child(props){
+   return <> {props.name},{props.purpose}</>
+}
+ 
+ 28.what is spread operator
+ -the spread operator is used to expand or spread an array or object
+ function App(){
+    const props={name="abc" purpose="intervies"}
+    return(
+        <>
+        <Child{...props} //spread operator />
+        </>
+    )
+}
+
+29.what are types of conditional rendering
+-if/else statements 
+function App(){
+    if(2>1){
+        return "abc"
+    }
+    else{
+        return "xyz"
+    }
+}
+-ternary operator
+function App(){
+    return 2>1 ?"abc":"xyz"
+}
+-&& operator
+function App(){
+    {return 2>1 && "abc"} always have true statement but the condition fails returns null
+}
+/****************************************************************JAVASCRIPT AND REACT INTERVIEW QUESTIONS***************************************************************/
+INTERVIEW 1:
+
+1.output of the code
+function abc(){
+    console.log(a,b,c)
+    const c=4;
+    let b=9;
+    var a=10;
+}
+abc() //a=undefined b,c=cannot acess before initialization but they are hoisted in tempory dead zone
+
+2.implicit and explicit binding
+var obj={
+    name:"piyush",
+    display:function(){           
+        console.log(this.name)
+    }
+     display:()=>{
+        console.log(this.name) // window object
+    }
+}
+var obj1={
+    name:"abc",
+}
+abj.display.call(obj1) //abc
+
+3. output based question on eventloop
+console.log("a")
+setTimeout(()=>console.log("set"),0)
+promise.resolve(()=>console.log("pro")).then((res)=> res())
+console.log("b")
+//a b pro set
+
+4.infinite currying
+function sum(a){
+   return function(b){
+        if(b) return sum(a+b)
+       return a
+    }
+}
+console.log(sum(5)(2)(4)(5)()) //16
+
+5.implement this code
+const calc={
+    total=0;
+    add(a){
+        this.total+=a;
+        return this;
+    },
+    multiply(a){
+     this.total *=a
+     return this;
+    },
+    sub(a){
+        this.total -=a;
+        return this;
+    }
+}
+const result=calc.add(10).multiply(5).sub(30).add(10)
+console.log(result.total) //10
